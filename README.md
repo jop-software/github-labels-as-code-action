@@ -21,6 +21,8 @@ with:
 
 **Note:** You need to execute this action *after* [actions/checkout](https://github.com/actions/checkout)
 
+If you want to see a real example of this action, take a look at [the workflows from this repository](./.github/workflows/labels.yaml) 😉 
+
 ## JSON Format
 
 The expected JSON format follows the _Body parameters_ from the 
