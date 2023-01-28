@@ -45,10 +45,9 @@ const fs = __importStar(__nccwpck_require__(3292));
 function main() {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
-        core.info("Starting Label Sync");
         try {
             // TODO: Make this path configurable
-            const path = "./github/labels.json";
+            const path = "./.github/labels.json";
             const token = core.getInput('token', { required: true });
             const content = yield fs.readFile(path, "utf8");
             const localLabels = JSON.parse(content);

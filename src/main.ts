@@ -2,15 +2,14 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 
 import * as fs from 'fs/promises';
+import * as path from 'path';
 
 import {isPost} from './helper/state';
 
 async function main(): Promise<void> {
-    core.info("Starting Label Sync");
-
     try {
         // TODO: Make this path configurable
-        const path = "./github/labels.json"
+        const path = "./.github/labels.json"
 
         const token = core.getInput('token', {required: true});
 
