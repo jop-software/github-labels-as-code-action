@@ -21,21 +21,16 @@ interface GithubLabel extends Label {
     "url": string;
 }
 
-async function getLabelByName(client: InstanceType<typeof GitHub>, repository: Repository, name: string): Promise<GithubLabel|false> {
-    const response = await client.rest.issues.getLabel({
+async function getAllLabels(client: InstanceType<typeof GitHub>, repository: Repository): Promise<GithubLabel[]> {
+    const response = await client.rest.issues.listLabelsForRepo({
         owner: repository.owner,
         repo: repository.repo,
-        name: name
     });
 
-    if (response.status !== 200) {
-        return false;
-    }
-
-    return response.data as GithubLabel;
+    return response.data as GithubLabel[];
 }
 
-async function updateLabelByName(client: InstanceType<typeof GitHub>, repository: Repository, label: Label) {
+async function updateLabel(client: InstanceType<typeof GitHub>, repository: Repository, label: Label) {
     const response = await client.rest.issues.updateLabel({
         owner: repository.owner,
         repo: repository.repo,
@@ -79,21 +74,35 @@ async function main(): Promise<void> {
 
         const client = github.getOctokit(token);
 
+        const githubLabels = await getAllLabels(client, repository);
+        core.debug(`Found ${githubLabels.length} labels in GitHub`);
+
         for (const label of localLabels) {
-            core.debug(`Processing label ${label.name}`);
+            core.debug(`Processing label '${label.name}'`);
 
-            // 1. Check weather the label exists
-            const ghLabel = await getLabelByName(client, repository, label.name);
-            core.debug(`ghLabel is: ${ghLabel}`);
+            // Try finding our local label in the list from GitHub
+            const ghLabel = githubLabels.find(ghLabel => ghLabel.name === label.name);
 
-            if (ghLabel) {
-                core.debug(`Updating label ${label.name}`);
-                // 2. if yes: update with local information
-                await updateLabelByName(client, repository, label);
-            } else {
-                core.debug(`Creating label ${label.name}`);
-                // 3. if not: create a new label with local information
+            // If we haven't found it - create it
+            if (!ghLabel) {
+                core.info(`Label ${label.name} not found in Github. Creating`);
                 await createLabel(client, repository, label);
+                continue;
+            }
+
+            core.debug(`Found label '${label.name}'`);
+
+            // Compare the labels to determine weather we need to update it
+            const needsUpdate = (
+                label.description !== ghLabel.description ||
+                label.color !== ghLabel.color
+            );
+
+            core.debug(`Does label '${label.name}' need an update: ${needsUpdate}`);
+
+            if (needsUpdate) {
+                core.debug(`Updating label '${label.name}'`);
+                await updateLabel(client, repository, label);
             }
         }
     } catch (error) {

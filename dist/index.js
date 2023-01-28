@@ -42,20 +42,16 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const fs = __importStar(__nccwpck_require__(3292));
-function getLabelByName(client, repository, name) {
+function getAllLabels(client, repository) {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield client.rest.issues.getLabel({
+        const response = yield client.rest.issues.listLabelsForRepo({
             owner: repository.owner,
             repo: repository.repo,
-            name: name
         });
-        if (response.status !== 200) {
-            return false;
-        }
         return response.data;
     });
 }
-function updateLabelByName(client, repository, label) {
+function updateLabel(client, repository, label) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield client.rest.issues.updateLabel({
             owner: repository.owner,
@@ -95,20 +91,26 @@ function main() {
                 repo: github.context.repo.repo,
             };
             const client = github.getOctokit(token);
+            const githubLabels = yield getAllLabels(client, repository);
+            core.debug(`Found ${githubLabels.length} labels in GitHub`);
             for (const label of localLabels) {
-                core.debug(`Processing label ${label.name}`);
-                // 1. Check weather the label exists
-                const ghLabel = yield getLabelByName(client, repository, label.name);
-                core.debug(`ghLabel is: ${ghLabel}`);
-                if (ghLabel) {
-                    core.debug(`Updating label ${label.name}`);
-                    // 2. if yes: update with local information
-                    yield updateLabelByName(client, repository, label);
-                }
-                else {
-                    core.debug(`Creating label ${label.name}`);
-                    // 3. if not: create a new label with local information
+                core.debug(`Processing label '${label.name}'`);
+                // Try finding our local label in the list from GitHub
+                const ghLabel = githubLabels.find(ghLabel => ghLabel.name === label.name);
+                // If we haven't found it - create it
+                if (!ghLabel) {
+                    core.info(`Label ${label.name} not found in Github. Creating`);
                     yield createLabel(client, repository, label);
+                    continue;
+                }
+                core.debug(`Found label '${label.name}'`);
+                // Compare the labels to determine weather we need to update it
+                const needsUpdate = (label.description !== ghLabel.description ||
+                    label.color !== ghLabel.color);
+                core.debug(`Does label '${label.name}' need an update: ${needsUpdate}`);
+                if (needsUpdate) {
+                    core.debug(`Updating label '${label.name}'`);
+                    yield updateLabel(client, repository, label);
                 }
             }
         }
