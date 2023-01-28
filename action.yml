@@ -4,7 +4,7 @@ inputs:
   token:
     description: >
       Personal access token (PAT) used to update the labels via the API.
-      Usually (any per default) ${{ github.token }}
+      Usually (any per default) `github.token`
     default: ${{ github.token }}
 runs:
   using: 'node16'

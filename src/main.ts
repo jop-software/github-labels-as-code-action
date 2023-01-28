@@ -7,7 +7,7 @@ const main = async () => {
     // TODO: Make this path configurable
     const path = "./github/issues.json"
 
-    const token = core.getInput('repo-token', {required: true});
+    const token = core.getInput('token', {required: true});
 
     const content = await fs.readFile(path, "utf8");
     const localLabels = JSON.parse(content);
