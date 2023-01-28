@@ -38,12 +38,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core_1 = __importDefault(__nccwpck_require__(2186));
-const github_1 = __importDefault(__nccwpck_require__(5438));
+const core = __importStar(__nccwpck_require__(2186));
+const github = __importStar(__nccwpck_require__(5438));
 const fs = __importStar(__nccwpck_require__(3292));
 function main() {
     var _a;
@@ -51,23 +48,23 @@ function main() {
         try {
             // TODO: Make this path configurable
             const path = "./github/issues.json";
-            const token = core_1.default.getInput('token', { required: true });
+            const token = core.getInput('token', { required: true });
             const content = yield fs.readFile(path, "utf8");
             const localLabels = JSON.parse(content);
             console.log(localLabels);
-            const client = github_1.default.getOctokit(token);
+            const client = github.getOctokit(token);
             const existingLabels = yield client.rest.issues.listLabelsForRepo({
-                owner: github_1.default.context.repo.owner,
-                repo: github_1.default.context.repo.repo,
+                owner: github.context.repo.owner,
+                repo: github.context.repo.repo,
             });
             console.log(existingLabels);
         }
         catch (error) {
-            core_1.default.setFailed(`${(_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : error}`);
+            core.setFailed(`${(_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : error}`);
         }
     });
 }
-if (!!core_1.default.getState('isPost')) {
+if (!!core.getState('isPost')) {
     main();
 }
 
