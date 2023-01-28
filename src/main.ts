@@ -3,6 +3,8 @@ import * as github from '@actions/github';
 
 import * as fs from 'fs/promises';
 
+import {isPost} from './helper/state';
+
 async function main(): Promise<void> {
     try {
         // TODO: Make this path configurable
@@ -29,6 +31,6 @@ async function main(): Promise<void> {
     }
 }
 
-if (!!core.getState('isPost')) {
+if (isPost) {
     main()
 }
