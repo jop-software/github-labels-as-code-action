@@ -1,5 +1,11 @@
 name: 'Ilac - Issue labels as code'
 description: 'Store your issue labels as code in the repository'
+inputs:
+  token:
+    description: >
+      Personal access token (PAT) used to update the labels via the API.
+      Usually (any per default) ${{ github.token }}
+    default: ${{ github.token }}
 runs:
   using: 'node16'
   main: 'dist/index.js'
