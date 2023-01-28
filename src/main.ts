@@ -31,6 +31,4 @@ async function main(): Promise<void> {
     }
 }
 
-if (isPost) {
-    main()
-}
+main()
