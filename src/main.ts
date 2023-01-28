@@ -85,7 +85,7 @@ async function main(): Promise<void> {
 
             // If we haven't found it - create it
             if (!ghLabel) {
-                core.info(`Label ${label.name} not found in Github. Creating`);
+                core.info(`Label '${label.name}' not found in Github. Creating`);
                 await createLabel(client, repository, label);
                 continue;
             }
