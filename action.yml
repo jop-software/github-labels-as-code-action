@@ -6,6 +6,10 @@ inputs:
       Personal access token (PAT) used to update the labels via the API.
       Usually (any per default) `github.token`
     default: ${{ github.token }}
+  file:
+    description: >
+      The JSON file you store your label information in.
+    default: './.github/labels.json'
 runs:
   using: 'node16'
   main: 'dist/index.js'

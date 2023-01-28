@@ -42,24 +42,67 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const fs = __importStar(__nccwpck_require__(3292));
+function getLabelByName(client, repository, name) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield client.rest.issues.getLabel({
+            owner: repository.owner,
+            repo: repository.repo,
+            name: name
+        });
+        return response.data;
+    });
+}
+function updateLabelByName(client, repository, label) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield client.rest.issues.updateLabel({
+            owner: repository.owner,
+            repo: repository.repo,
+            name: label.name,
+            new_name: label.name,
+            color: label.color,
+            description: label.description || "",
+        });
+        return response.data;
+    });
+}
+function createLabel(client, repository, label) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield client.rest.issues.createLabel({
+            owner: repository.owner,
+            repo: repository.repo,
+            name: label.name,
+            new_name: label.name,
+            color: label.color,
+            description: label.description || "",
+        });
+        return response.data;
+    });
+}
 function main() {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            // TODO: Make this path configurable
-            const path = "./.github/labels.json";
             const token = core.getInput('token', { required: true });
-            const content = yield fs.readFile(path, "utf8");
+            const labelsFilesPath = core.getInput("file", { required: true });
+            const content = yield fs.readFile(labelsFilesPath, "utf8");
             const localLabels = JSON.parse(content);
-            const client = github.getOctokit(token);
-            const existingLabels = yield client.rest.issues.listLabelsForRepo({
+            const repository = {
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
-            });
-            core.info("Debug: Local Labels");
-            core.info(JSON.stringify(localLabels));
-            core.info("Debug: Exising issues from API");
-            core.info(JSON.stringify(existingLabels));
+            };
+            const client = github.getOctokit(token);
+            for (const label of localLabels) {
+                // 1. Check weather the label exists
+                const ghLabel = yield getLabelByName(client, repository, label.name);
+                if (ghLabel) {
+                    // 2. if yes: update with local information
+                    yield updateLabelByName(client, repository, label);
+                }
+                else {
+                    // 3. if not: create a new label with local information
+                    yield createLabel(client, repository, label);
+                }
+            }
         }
         catch (error) {
             core.setFailed(`${(_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : error}`);
