@@ -1,0 +1,21 @@
+{
+  "name": "@jop-software/issue-labels-as-code",
+  "version": "1.0.0",
+  "description": "Store your issue labels as code in the repository",
+  "main": "lib/main.js",
+  "scripts": {
+    "build": "tsc && ncc build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@vercel/ncc": "^0.36.0",
+    "typescript": "^4.9.4"
+  }
+}

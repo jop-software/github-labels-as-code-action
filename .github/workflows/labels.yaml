@@ -1,0 +1,10 @@
+on: [push]
+
+jobs:
+  update-labels:
+    runs-on: ubuntu-latest
+    name: "Sync issue labels"
+    steps:
+      - uses: jop-software/issue-labels-as-code-action@main
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"

@@ -1,0 +1,9 @@
+{
+    "labels": [
+        {
+            "name": "Bug",
+            "description": "Oh no ... sth. went wrong",
+            "color": "#e6e6e6"
+        }
+    ]
+}
