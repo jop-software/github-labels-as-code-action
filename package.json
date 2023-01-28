@@ -1,10 +1,10 @@
 {
-  "name": "@jop-software/issue-labels-as-code",
+  "name": "@jop-software/github-labels-as-code",
   "version": "1.0.0",
-  "description": "Store your issue labels as code in the repository",
+  "description": "Store your labels as code in the repository",
   "main": "lib/main.js",
   "scripts": {
-    "build": "tsc && ncc build"
+    "build": "tsc && ncc build --license licenses.txt"
   },
   "keywords": [],
   "author": "",

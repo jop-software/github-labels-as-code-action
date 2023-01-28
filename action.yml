@@ -1,5 +1,5 @@
-name: 'Ilac - Issue labels as code'
-description: 'Store your issue labels as code in the repository'
+name: 'GLAC - GitHub labels as code'
+description: 'Store your labels as code in the repository'
 inputs:
   token:
     description: >

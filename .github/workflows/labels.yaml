@@ -6,6 +6,6 @@ jobs:
     name: "Sync issue labels"
     steps:
       - uses: 'actions/checkout@v3'
-      - uses: 'jop-software/issue-labels-as-code-action@main'
+      - uses: 'jop-software/github-labels-as-code-action@main'
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"

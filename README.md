@@ -11,7 +11,7 @@ Store your issue labels as code in your repository
 ## Example usage
 
 ```yaml
-uses: jop-software/issue-labels-as-code-action@v1.0
+uses: jop-software/github-labels-as-code-action@v1.0
 with:
   token: "${{ github.token }}"
 ```
