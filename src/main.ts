@@ -20,8 +20,10 @@ async function main(): Promise<void> {
             repo: github.context.repo.repo,
         });
 
-        core.info('local labels: ' + JSON.stringify(localLabels))
-        core.info('existing labels: ' + JSON.stringify(existingLabels))
+        core.info("Debug: Local Labels");
+        core.info(JSON.stringify(localLabels))
+        core.info("Debug: Exising issues from API")
+        core.info(JSON.stringify(existingLabels))
     } catch (error) {
         core.setFailed(`${(error as any)?.message ?? error}`)
     }

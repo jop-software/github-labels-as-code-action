@@ -56,8 +56,10 @@ function main() {
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
             });
-            core.info('local labels: ' + JSON.stringify(localLabels));
-            core.info('existing labels: ' + JSON.stringify(existingLabels));
+            core.info("Debug: Local Labels");
+            core.info(JSON.stringify(localLabels));
+            core.info("Debug: Exising issues from API");
+            core.info(JSON.stringify(existingLabels));
         }
         catch (error) {
             core.setFailed(`${(_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : error}`);
