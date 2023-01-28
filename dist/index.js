@@ -99,7 +99,7 @@ function main() {
                 const ghLabel = githubLabels.find(ghLabel => ghLabel.name === label.name);
                 // If we haven't found it - create it
                 if (!ghLabel) {
-                    core.info(`Label ${label.name} not found in Github. Creating`);
+                    core.info(`Label '${label.name}' not found in Github. Creating`);
                     yield createLabel(client, repository, label);
                     continue;
                 }
