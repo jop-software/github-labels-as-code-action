@@ -49,6 +49,9 @@ function getLabelByName(client, repository, name) {
             repo: repository.repo,
             name: name
         });
+        if (response.status !== 200) {
+            return false;
+        }
         return response.data;
     });
 }
@@ -86,19 +89,24 @@ function main() {
             const labelsFilesPath = core.getInput("file", { required: true });
             const content = yield fs.readFile(labelsFilesPath, "utf8");
             const localLabels = JSON.parse(content);
+            core.debug(`Found ${localLabels.length} labels in ${labelsFilesPath}`);
             const repository = {
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
             };
             const client = github.getOctokit(token);
             for (const label of localLabels) {
+                core.debug(`Processing label ${label.name}`);
                 // 1. Check weather the label exists
                 const ghLabel = yield getLabelByName(client, repository, label.name);
+                core.debug(`ghLabel is: ${ghLabel}`);
                 if (ghLabel) {
+                    core.debug(`Updating label ${label.name}`);
                     // 2. if yes: update with local information
                     yield updateLabelByName(client, repository, label);
                 }
                 else {
+                    core.debug(`Creating label ${label.name}`);
                     // 3. if not: create a new label with local information
                     yield createLabel(client, repository, label);
                 }

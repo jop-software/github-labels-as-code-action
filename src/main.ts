@@ -21,12 +21,16 @@ interface GithubLabel extends Label {
     "url": string;
 }
 
-async function getLabelByName(client: InstanceType<typeof GitHub>, repository: Repository, name: string): Promise<GithubLabel> {
+async function getLabelByName(client: InstanceType<typeof GitHub>, repository: Repository, name: string): Promise<GithubLabel|false> {
     const response = await client.rest.issues.getLabel({
         owner: repository.owner,
         repo: repository.repo,
         name: name
     });
+
+    if (response.status !== 200) {
+        return false;
+    }
 
     return response.data as GithubLabel;
 }
@@ -66,6 +70,8 @@ async function main(): Promise<void> {
         const content = await fs.readFile(labelsFilesPath, "utf8");
         const localLabels: Label[] = JSON.parse(content);
 
+        core.debug(`Found ${localLabels.length} labels in ${labelsFilesPath}`);
+
         const repository: Repository = {
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
@@ -74,13 +80,18 @@ async function main(): Promise<void> {
         const client = github.getOctokit(token);
 
         for (const label of localLabels) {
+            core.debug(`Processing label ${label.name}`);
+
             // 1. Check weather the label exists
             const ghLabel = await getLabelByName(client, repository, label.name);
+            core.debug(`ghLabel is: ${ghLabel}`);
 
             if (ghLabel) {
+                core.debug(`Updating label ${label.name}`);
                 // 2. if yes: update with local information
                 await updateLabelByName(client, repository, label);
             } else {
+                core.debug(`Creating label ${label.name}`);
                 // 3. if not: create a new label with local information
                 await createLabel(client, repository, label);
             }
