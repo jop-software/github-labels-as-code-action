@@ -1,5 +1,9 @@
 name: 'GLAC - GitHub labels as code'
+author: "jop-software Inh. Johannes Przymusinski"
 description: 'Store your labels as code in the repository'
+branding:
+  icon: "bookmark"
+  color: "green"
 inputs:
   token:
     description: >
