@@ -6,6 +6,8 @@ import * as fs from 'fs/promises';
 import {isPost} from './helper/state';
 
 async function main(): Promise<void> {
+    core.info("Starting Label Sync");
+
     try {
         // TODO: Make this path configurable
         const path = "./github/labels.json"
