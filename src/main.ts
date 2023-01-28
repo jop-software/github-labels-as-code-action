@@ -8,7 +8,7 @@ import {isPost} from './helper/state';
 async function main(): Promise<void> {
     try {
         // TODO: Make this path configurable
-        const path = "./github/issues.json"
+        const path = "./github/labels.json"
 
         const token = core.getInput('token', {required: true});
 
