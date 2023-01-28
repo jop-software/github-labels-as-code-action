@@ -48,7 +48,7 @@ const fs = __importStar(__nccwpck_require__(3292));
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     // TODO: Make this path configurable
     const path = "./github/issues.json";
-    const token = core_1.default.getInput('repo-token', { required: true });
+    const token = core_1.default.getInput('token', { required: true });
     const content = yield fs.readFile(path, "utf8");
     const localLabels = JSON.parse(content);
     console.log(localLabels);
