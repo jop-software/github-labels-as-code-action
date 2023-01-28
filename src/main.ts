@@ -13,8 +13,6 @@ async function main(): Promise<void> {
         const content = await fs.readFile(path, "utf8");
         const localLabels = JSON.parse(content);
 
-        console.log(localLabels)
-
         const client = github.getOctokit(token);
 
         const existingLabels = await client.rest.issues.listLabelsForRepo({
@@ -22,7 +20,8 @@ async function main(): Promise<void> {
             repo: github.context.repo.repo,
         });
 
-        console.log(existingLabels);
+        core.info(JSON.stringify(localLabels))
+        core.info(JSON.stringify(existingLabels))
     } catch (error) {
         core.setFailed(`${(error as any)?.message ?? error}`)
     }

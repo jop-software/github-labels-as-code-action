@@ -51,13 +51,13 @@ function main() {
             const token = core.getInput('token', { required: true });
             const content = yield fs.readFile(path, "utf8");
             const localLabels = JSON.parse(content);
-            console.log(localLabels);
             const client = github.getOctokit(token);
             const existingLabels = yield client.rest.issues.listLabelsForRepo({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
             });
-            console.log(existingLabels);
+            core.info(JSON.stringify(localLabels));
+            core.info(JSON.stringify(existingLabels));
         }
         catch (error) {
             core.setFailed(`${(_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : error}`);
