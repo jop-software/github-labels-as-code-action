@@ -18,9 +18,5 @@
     "name": "Task",
     "description": "Everything that needs to be done and don't fit one of the other",
     "color": "fbca04"
-  },
-  {
-    "name": "Label without description",
-    "color": "0075ca"
   }
 ]
