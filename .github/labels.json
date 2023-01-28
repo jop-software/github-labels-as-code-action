@@ -1,7 +1,22 @@
 [
   {
-    "name": "does not exist",
-    "description": "Oh no ... sth. went wrong",
-    "color": "e6e6e6"
+    "name": "Bug",
+    "description": "Something isn't working",
+    "color": "d73a4a"
+  },
+  {
+    "name": "Feature",
+    "description": "A new feature or request",
+    "color": "008672"
+  },
+  {
+    "name": "Documentation",
+    "description": "Improvements or additions to documentation",
+    "color": "0075ca"
+  },
+  {
+    "name": "Task",
+    "description": "Everything that needs to be done and don't fit one of the other",
+    "color": "fbca04"
   }
 ]
