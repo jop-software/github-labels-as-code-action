@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "Sync issue labels"
     steps:
-      - uses: jop-software/issue-labels-as-code-action@main
+      - uses: 'actions/checkout@v3'
+      - uses: 'jop-software/issue-labels-as-code-action@main'
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
