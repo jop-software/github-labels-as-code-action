@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>Issue labels as code Action</h1>
+    <h1>GitHub labels as code Action</h1>
     <p>Store your issue labels as code in your repository.</p>
 </div>
 
